@@ -112,7 +112,7 @@
 @media (min-width: 768px) {
   .site-header {
     top: 26px;
-    left: auto;
+    left: 14px;
     right: auto;
     bottom: 26px;
     width: 250px;
@@ -123,6 +123,7 @@
     gap: 26px;
     padding: 26px 22px;
     border-radius: var(--radius-l);
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.3s;
   }
 
   .menu-button,

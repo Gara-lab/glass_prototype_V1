@@ -24,17 +24,47 @@
     return wrap;
   }
 
-  function navLinks(list, className) {
+  function navLinks(list, className, withIcons) {
     var ul = ns.dom.el("ul", className);
     list.forEach(function (item) {
       var li = ns.dom.el("li");
-      var a = ns.dom.el("a", "nav-link", item.label);
+      var a = ns.dom.el("a", "nav-link");
       a.href = item.href;
       a.dataset.target = item.id;
+      if (withIcons) {
+        a.innerHTML = icon(item.id) + "<span>" + item.label + "</span>";
+      } else {
+        a.textContent = item.label;
+      }
       li.appendChild(a);
       ul.appendChild(li);
     });
     return ul;
+  }
+
+  function hideButton(labels) {
+    var button = ns.dom.el("button", "sidebar-hide");
+    button.id = "sidebar-hide";
+    button.type = "button";
+    button.setAttribute("aria-controls", "site-header");
+    button.setAttribute("aria-expanded", "true");
+    button.setAttribute("aria-label", labels.hideLabel);
+    button.innerHTML = '<svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg><span>' + labels.hideLabel + "</span>";
+    return button;
+  }
+
+  function showRail(labels) {
+    var rail = ns.dom.el("div", "sidebar-rail");
+    rail.id = "sidebar-rail";
+    var button = ns.dom.el("button", "sidebar-show");
+    button.id = "sidebar-show";
+    button.type = "button";
+    button.setAttribute("aria-controls", "site-header");
+    button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-label", labels.showLabel);
+    button.innerHTML = '<svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d=\"M4 7h16\"/><path d=\"M4 12h16\"/><path d=\"M4 17h16\"/></svg>';
+    rail.appendChild(button);
+    document.body.appendChild(rail);
   }
 
   function renderHeader() {
@@ -48,12 +78,17 @@
 
     var desktop = ns.dom.el("nav", "desktop-nav");
     desktop.setAttribute("aria-label", "Main navigation");
-    desktop.appendChild(navLinks(site.nav, "desktop-list"));
+    desktop.appendChild(navLinks(site.nav, "desktop-list", true));
     host.appendChild(desktop);
 
     var cta = ns.dom.el("a", "btn btn-soft header-cta", "Start a project");
     cta.href = "#contact";
     host.appendChild(cta);
+
+    if (site.sidebar) {
+      host.appendChild(hideButton(site.sidebar));
+      showRail(site.sidebar);
+    }
 
     var sheet = ns.dom.el("div", "menu-sheet");
     sheet.id = "menu-sheet";
@@ -87,7 +122,7 @@
       var a = ns.dom.el("a", "tab");
       a.href = item.href;
       a.dataset.target = item.id;
-      a.innerHTML = ns.render.icon(item.id === "home" ? "home" : item.id === "services" ? "grid" : item.id === "results" ? "chart" : item.id === "about" ? "user" : "mail") + "<span>" + item.label + "</span>";
+      a.innerHTML = icon(item.id === "home" ? "home" : item.id === "services" ? "grid" : item.id === "results" ? "chart" : item.id === "about" ? "user" : "mail") + "<span>" + item.label + "</span>";
       bar.appendChild(a);
     });
     document.body.appendChild(bar);
