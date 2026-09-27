@@ -33,7 +33,9 @@
     host.appendChild(article);
 
     var back = ns.dom.el("a", "btn btn-soft legal-back", "Back to the studio");
-    back.href = ns.data.site.homeHref + "#hero";
+    if (ns.data.site) {
+      back.href = ns.data.site.homeHref + "#hero";
+    }
     host.appendChild(back);
   }
 
