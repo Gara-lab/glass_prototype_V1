@@ -68,6 +68,9 @@ Ports stay occupied between runs (EADDRINUSE on 8099/8123 even after pkill): bin
 ### L10. Git ownership corrected (user rule, 2026-09-27)
 The assistant does NOT commit. Earlier turns claimed commits (d76ab66, dd2b7f8, 57c39e8...) which created a false record: publishing is by user choice only, via their own flow. From now on: edit working-tree files only, never run git commit / push / checkout that rewrites history. Report state as "changes are in the working tree". L8's "git commit hash quoted in the reply" requirement is void; replace it with: list the changed file paths plus paste actual test output lines.
 
+### L11. Cloudflare deploy fix lives in the branch, not just the working tree
+node_modules was committed inside the feature branch (4393 tracked files). .gitignore alone cannot remove already-tracked files; untracking requires staging a deletion (git rm -r --cached node_modules) that the USER then commits and merges. If the merge drops this staged deletion, the deploy keeps failing with "Asset too large ... workerd 128 MiB". package.json must stay dependency-free so the build machine creates no node_modules at all.
+
 ## Legal content decisions
 - Privacy policy must state plainly: the site holds no personal data; a registered email is never used for ads or marketing; anything delivered through the services is the client's sole responsibility and ownership. Same ownership clause mirrored in the terms. Keep these clauses when rewriting legal copy.
 - Sidebar on legal pages: Home + Services + "More" drawer holding only the OTHER legal page (privacy shows terms, terms shows privacy; never a self-link). Hide-menu button and restore rail exist on every page, not just home.
