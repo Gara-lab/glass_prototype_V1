@@ -28,22 +28,23 @@
       if (!status) {
         return;
       }
+      var copy = ns.lang.t();
       if (nameInput.value.trim().length < 2) {
-        setStatus(status, "Please add your name.", false);
+        setStatus(status, copy.contact.errorName, false);
         nameInput.focus();
         return;
       }
       if (!validEmail(emailInput.value.trim())) {
-        setStatus(status, "Please check the email format.", false);
+        setStatus(status, copy.contact.errorEmail, false);
         emailInput.focus();
         return;
       }
       if (messageInput.value.trim().length < 10) {
-        setStatus(status, "Tell me a little more about the account.", false);
+        setStatus(status, copy.contact.errorMessage, false);
         messageInput.focus();
         return;
       }
-      setStatus(status, "Thank you. Your request is noted, I will reply within two working days.", true);
+      setStatus(status, copy.contact.success, true);
       form.reset();
     });
   }

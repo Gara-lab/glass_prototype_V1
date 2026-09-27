@@ -877,3 +877,46 @@ body.sidebar-hidden .sidebar-rail {
 .legal-link:hover {
   color: var(--ink);
 }
+
+.lang-toggle {
+  position: fixed;
+  top: calc(10px + env(safe-area-inset-top));
+  right: 12px;
+  z-index: 70;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--glass-strong);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.lang-toggle:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.lang-toggle .icon-svg {
+  width: 17px;
+  height: 17px;
+  flex: none;
+}
+
+@media (min-width: 768px) {
+  .lang-toggle {
+    top: 26px;
+    right: 26px;
+  }
+}
