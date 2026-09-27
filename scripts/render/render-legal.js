@@ -11,15 +11,17 @@
     if (!host) {
       return;
     }
+    var copy = ns.lang.t();
     var pageName = host.dataset.page;
-    var data = pageName === "terms" ? ns.data.terms : ns.data.privacy;
+    var data = pageName === "terms" ? copy.legal.terms : copy.legal.privacy;
     if (!data) {
       return;
     }
+    host.innerHTML = "";
 
     var head = ns.dom.el("header", "section-head reveal");
-    head.appendChild(ns.dom.el("p", "eyebrow", "Legal"));
-    head.appendChild(ns.dom.el("h1", null, host.dataset.title));
+    head.appendChild(ns.dom.el("p", "eyebrow", copy.legal.eyebrow));
+    head.appendChild(ns.dom.el("h1", null, pageName === "terms" ? copy.legal.termsTitle : copy.legal.privacyTitle));
     head.appendChild(ns.dom.el("p", "muted", data.updated));
     head.appendChild(ns.dom.el("p", "lead", data.intro));
     host.appendChild(head);
@@ -35,12 +37,14 @@
     });
     host.appendChild(article);
 
-    var back = ns.dom.el("a", "btn btn-soft legal-back", "Back to the studio");
+    var back = ns.dom.el("a", "btn btn-soft legal-back", copy.legal.back);
     if (ns.data.site) {
       back.href = ns.data.site.homeHref + "#hero";
     }
     host.appendChild(back);
   }
+
+  ns.render.legal = renderLegalPage;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", renderLegalPage);

@@ -21,7 +21,8 @@
       node.classList.toggle("open", open);
       button.classList.toggle("active", open);
       button.setAttribute("aria-expanded", open ? "true" : "false");
-      button.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      var copy = ns.lang.t();
+      button.setAttribute("aria-label", copy.menuButton);
       document.body.classList.toggle("locked", open);
     }
 
@@ -52,6 +53,8 @@
     if (!header || !hide || !show) {
       return;
     }
+    hide.onclick = null;
+    show.onclick = null;
 
     function setHidden(hidden) {
       document.body.classList.toggle("sidebar-hidden", hidden);
@@ -62,17 +65,17 @@
       }
     }
 
-    hide.addEventListener("click", function () {
+    hide.onclick = function () {
       setHidden(true);
-    });
+    };
 
-    show.addEventListener("click", function () {
+    show.onclick = function () {
       setHidden(false);
       var firstLink = header.querySelector(".desktop-list a");
       if (firstLink) {
         firstLink.focus();
       }
-    });
+    };
 
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape" && document.body.classList.contains("sidebar-hidden")) {

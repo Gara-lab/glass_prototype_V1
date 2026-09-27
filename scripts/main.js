@@ -3,13 +3,6 @@
 
   var ns = window.lueurStudio;
 
-  function setYear() {
-    var node = document.getElementById("footer-year");
-    if (node) {
-      node.textContent = "© " + new Date().getFullYear() + " Lueur studio. All rights reserved.";
-    }
-  }
-
   function setActiveNav() {
     var sections = ["home", "services", "work", "results", "about", "contact"];
     var map = { home: "hero" };
@@ -36,9 +29,74 @@
     });
   }
 
-  function boot() {
-    setYear();
+  function applyChrome() {
+    var copy = ns.lang.t();
+    document.documentElement.lang = copy.lang;
+    document.title = copy.title;
+    var meta = document.querySelector('meta[name="description"]');
+    if (meta) {
+      meta.setAttribute("content", copy.description);
+    }
+    var skip = document.querySelector(".skip-link");
+    if (skip) {
+      skip.textContent = copy.skipLink;
+    }
+  }
+
+  function rerenderAll() {
+    applyChrome();
+    if (ns.render.header) {
+      ns.render.header();
+    }
+    if (ns.render.tabbar) {
+      ns.render.tabbar();
+    }
+    if (ns.render.refreshLangLabel) {
+      ns.render.refreshLangLabel();
+    }
+    if (ns.render.hero) {
+      ns.render.hero();
+    }
+    if (ns.render.services) {
+      ns.render.services();
+    }
+    if (ns.render.work) {
+      ns.render.work();
+    }
+    if (ns.render.results) {
+      ns.render.results();
+    }
+    if (ns.render.about) {
+      ns.render.about();
+    }
+    if (ns.render.contact) {
+      ns.render.contact();
+    }
+    if (ns.render.legal) {
+      ns.render.legal();
+    }
+    if (ns.render.footer) {
+      ns.render.footer();
+    }
+    if (ns.behavior.lightboxClose) {
+      ns.behavior.lightboxClose();
+    }
+    if (ns.behavior.contactForm) {
+      ns.behavior.contactForm();
+    }
+    if (ns.behavior.sidebarToggle) {
+      ns.behavior.sidebarToggle();
+    }
+    if (ns.behavior.revealOnScroll) {
+      ns.behavior.revealOnScroll();
+    }
     setActiveNav();
+  }
+
+  function boot() {
+    applyChrome();
+    setActiveNav();
+    window.addEventListener("lueur:langchange", rerenderAll);
   }
 
   if (document.readyState === "loading") {

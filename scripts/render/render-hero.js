@@ -20,10 +20,11 @@
 
   function renderHero() {
     var host = ns.dom.section("hero");
-    var site = ns.data.site;
-    if (!host || !site) {
+    if (!host) {
       return;
     }
+    var site = ns.lang.t();
+    host.innerHTML = "";
     var wrap = ns.dom.el("div", "hero-wrap reveal");
 
     var text = ns.dom.el("div", "hero-text");
@@ -42,7 +43,7 @@
     text.appendChild(actions);
 
     var chips = ns.dom.el("ul", "chip-row");
-    ["Feeds", "Highlights", "Covers", "Templates"].forEach(function (label) {
+    site.hero.chips.forEach(function (label) {
       var li = ns.dom.el("li", "chip glass", label);
       chips.appendChild(li);
     });
@@ -51,13 +52,15 @@
     var visual = ns.dom.el("div", "hero-visual");
     visual.appendChild(previewCard());
     var badge = ns.dom.el("div", "float-badge glass");
-    badge.textContent = "New look in three weeks";
+    badge.textContent = site.hero.badge;
     visual.appendChild(badge);
 
     wrap.appendChild(text);
     wrap.appendChild(visual);
     host.appendChild(wrap);
   }
+
+  ns.render.hero = renderHero;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", renderHero);

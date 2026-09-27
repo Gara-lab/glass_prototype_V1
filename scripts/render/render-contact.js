@@ -10,7 +10,7 @@
     return row;
   }
 
-  function form() {
+  function form(copy) {
     var box = ns.dom.el("form", "contact-form glass reveal");
     box.id = "contact-form";
     box.noValidate = true;
@@ -30,24 +30,24 @@
       return wrap;
     }
 
-    box.appendChild(field("name", "Name", "text", "Your name"));
+    box.appendChild(field("name", copy.contact.nameLabel, "text", copy.contact.namePlaceholder));
 
-    var emailWrap = field("email", "Email", "email", "you@example.com");
+    var emailWrap = field("email", copy.contact.emailLabel, "email", "you@example.com");
     box.appendChild(emailWrap);
 
     var messageWrap = ns.dom.el("div", "field");
-    var msgLabel = ns.dom.el("label", null, "About the account");
+    var msgLabel = ns.dom.el("label", null, copy.contact.messageLabel);
     msgLabel.htmlFor = "message";
     var textarea = ns.dom.el("textarea", "input textarea");
     textarea.id = "message";
     textarea.name = "message";
     textarea.rows = 4;
-    textarea.placeholder = "What feels off about the page today?";
+    textarea.placeholder = copy.contact.messagePlaceholder;
     messageWrap.appendChild(msgLabel);
     messageWrap.appendChild(textarea);
     box.appendChild(messageWrap);
 
-    var submit = ns.dom.el("button", "btn btn-primary btn-block", "Send request");
+    var submit = ns.dom.el("button", "btn btn-primary btn-block", copy.contact.submit);
     submit.type = "submit";
     box.appendChild(submit);
 
@@ -62,39 +62,38 @@
 
   function renderContact() {
     var host = ns.dom.section("contact");
-    var data = ns.data.contact;
-    var site = ns.data.site;
-    if (!host || !data) {
+    if (!host) {
       return;
     }
+    var copy = ns.lang.t();
+    host.innerHTML = "";
     var head = ns.dom.el("header", "section-head reveal");
-    head.appendChild(ns.dom.el("p", "eyebrow", "Contact"));
-    head.appendChild(ns.dom.el("h2", null, "Let's revive your page."));
-    if (site) {
-      head.appendChild(ns.dom.el("p", "lead", site.contactIntro));
-    }
+    head.appendChild(ns.dom.el("p", "eyebrow", copy.contact.eyebrow));
+    head.appendChild(ns.dom.el("h2", null, copy.contact.heading));
+    head.appendChild(ns.dom.el("p", "lead", copy.contact.intro));
     host.appendChild(head);
 
     var wrap = ns.dom.el("div", "contact-wrap");
 
     var info = ns.dom.el("div", "contact-info glass reveal");
-    info.appendChild(infoRow("Email", data.email));
-    info.appendChild(infoRow("Studio", data.handle));
-    info.appendChild(infoRow("Based", data.location));
-    info.appendChild(infoRow("Status", data.availability));
-    var mail = ns.dom.el("a", "btn btn-ghost mailto", "Write directly");
-    mail.href = "mailto:" + data.email;
+    info.appendChild(infoRow(copy.contact.infoEmail, copy.contact.email));
+    info.appendChild(infoRow(copy.contact.infoStudio, copy.contact.handle));
+    info.appendChild(infoRow(copy.contact.infoBased, copy.contact.location));
+    info.appendChild(infoRow(copy.contact.infoStatus, copy.contact.availability));
+    var mail = ns.dom.el("a", "btn btn-ghost mailto", copy.contact.direct);
+    mail.href = "mailto:" + copy.contact.email;
     info.appendChild(mail);
 
     var formBox = ns.dom.el("div", "contact-form-box reveal");
     formBox.id = "contact-form-box";
-    formBox.dataset.intro = site ? site.contactIntro : "";
-    formBox.appendChild(form());
+    formBox.appendChild(form(copy));
 
     wrap.appendChild(formBox);
     wrap.appendChild(info);
     host.appendChild(wrap);
   }
+
+  ns.render.contact = renderContact;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", renderContact);

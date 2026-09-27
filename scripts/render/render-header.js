@@ -37,14 +37,14 @@
     return "mail";
   }
 
-  function brand() {
+  function brand(copy) {
     var wrap = ns.dom.el("a", "brand");
     wrap.href = "#hero";
-    wrap.innerHTML = '<span class="brand-mark" aria-hidden="true"></span><span class="brand-text">Lueur <em>studio</em></span>';
+    wrap.innerHTML = '<span class="brand-mark" aria-hidden="true"></span><span class="brand-text">' + copy.brand.text + "</span>";
     return wrap;
   }
 
-  function navLinks(list, className, withIcons) {
+  function navLinks(list, className, withIcons, copy) {
     var ul = ns.dom.el("ul", className);
     var rootHref = ns.data.site ? ns.data.site.homeHref : "index.html";
     var onHome = document.body.dataset.page === "home";
@@ -55,10 +55,11 @@
       if (item.href.indexOf("#") === 0) {
         a.dataset.target = item.id;
       }
+      var label = copy.nav[item.id] || item.label;
       if (withIcons) {
-        a.innerHTML = icon(navIcon(item.id)) + "<span>" + item.label + "</span>";
+        a.innerHTML = icon(navIcon(item.id)) + "<span>" + label + "</span>";
       } else {
-        a.textContent = item.label;
+        a.textContent = label;
       }
       li.appendChild(a);
       ul.appendChild(li);
@@ -78,6 +79,10 @@
   }
 
   function showRail(labels) {
+    var old = ns.dom.query("#sidebar-rail");
+    if (old) {
+      old.remove();
+    }
     var rail = ns.dom.el("div", "sidebar-rail");
     rail.id = "sidebar-rail";
     var button = ns.dom.el("button", "sidebar-show");
@@ -110,11 +115,12 @@
     if (!host || !site) {
       return;
     }
+    var copy = ns.lang.t();
     var page = document.body.dataset.page || "home";
     host.dataset.active = page;
     host.innerHTML = "";
 
-    var brandLink = brand();
+    var brandLink = brand(copy);
     if (page !== "home") {
       brandLink.href = site.homeHref + "#hero";
     }
@@ -122,40 +128,40 @@
 
     var desktop = ns.dom.el("nav", "desktop-nav");
     desktop.setAttribute("tabindex", "0");
-    desktop.setAttribute("aria-label", "Main navigation");
+    desktop.setAttribute("aria-label", copy.drawerMore);
     if (page === "home") {
-      desktop.appendChild(navLinks(site.nav, "desktop-list", true));
+      desktop.appendChild(navLinks(site.nav, "desktop-list", true, copy));
     } else {
-      desktop.appendChild(navLinks([site.nav[0], site.nav[1]], "desktop-list", true));
+      desktop.appendChild(navLinks([site.nav[0], site.nav[1]], "desktop-list", true, copy));
     }
     if (site.secondaryNav) {
-      desktop.appendChild(ns.dom.el("p", "drawer-label", "More"));
-      desktop.appendChild(navLinks(otherLegal(page, site.secondaryNav), "drawer-list", false));
+      desktop.appendChild(ns.dom.el("p", "drawer-label", copy.drawerMore));
+      desktop.appendChild(navLinks(otherLegal(page, site.secondaryNav), "drawer-list", false, copy));
     }
     host.appendChild(desktop);
 
-    var cta = ns.dom.el("a", "btn btn-soft header-cta", "Start a project");
+    var cta = ns.dom.el("a", "btn btn-soft header-cta", copy.headerCta);
     cta.href = page === "home" ? "#contact" : site.homeHref + "#contact";
     host.appendChild(cta);
 
     if (site.sidebar) {
-      host.appendChild(hideButton(site.sidebar));
-      showRail(site.sidebar);
+      host.appendChild(hideButton(copy.sidebar));
+      showRail(copy.sidebar);
     }
 
     var sheet = ns.dom.el("div", "menu-sheet");
     sheet.id = "menu-sheet";
     var sheetNav = ns.dom.el("nav", "sheet-nav");
-    sheetNav.setAttribute("aria-label", "Sheet navigation");
+    sheetNav.setAttribute("aria-label", copy.menuButton);
     if (page === "home") {
-      sheetNav.appendChild(navLinks([site.nav[0], site.nav[1], site.nav[2]], "sheet-list", false));
-      sheetNav.appendChild(ns.dom.el("p", "drawer-label", "More"));
-      sheetNav.appendChild(navLinks([site.nav[3], site.nav[4], site.nav[5]], "sheet-list sheet-secondary", false));
+      sheetNav.appendChild(navLinks([site.nav[0], site.nav[1], site.nav[2]], "sheet-list", false, copy));
+      sheetNav.appendChild(ns.dom.el("p", "drawer-label", copy.drawerMore));
+      sheetNav.appendChild(navLinks([site.nav[3], site.nav[4], site.nav[5]], "sheet-list sheet-secondary", false, copy));
       if (site.secondaryNav) {
-        sheetNav.appendChild(navLinks(site.secondaryNav, "sheet-list sheet-legal", false));
+        sheetNav.appendChild(navLinks(site.secondaryNav, "sheet-list sheet-legal", false, copy));
       }
     } else if (site.secondaryNav) {
-      sheetNav.appendChild(navLinks(site.secondaryNav, "sheet-list sheet-legal", false));
+      sheetNav.appendChild(navLinks(site.secondaryNav, "sheet-list sheet-legal", false, copy));
     }
     sheet.appendChild(sheetNav);
     document.body.appendChild(sheet);
@@ -165,9 +171,13 @@
     toggle.type = "button";
     toggle.setAttribute("aria-controls", "menu-sheet");
     toggle.setAttribute("aria-expanded", "false");
-    toggle.setAttribute("aria-label", "Open menu");
+    toggle.setAttribute("aria-label", copy.menuButton);
     toggle.innerHTML = '<span class="menu-bar"></span><span class="menu-bar"></span>';
     host.appendChild(toggle);
+
+    if (ns.behavior.navToggle) {
+      ns.behavior.navToggle();
+    }
   }
 
   function renderTabbar() {
@@ -176,39 +186,43 @@
     if (!site) {
       return;
     }
-    if (ns.dom.query(".mobile-tabbar")) {
-      return;
+    var existing = ns.dom.query(".mobile-tabbar");
+    if (existing) {
+      existing.remove();
     }
+    var copy = ns.lang.t();
     var bar = ns.dom.el("nav", "mobile-tabbar glass");
-    bar.setAttribute("aria-label", "Page navigation");
+    bar.setAttribute("aria-label", copy.drawerMore);
     if (page === "home") {
       [site.nav[0], site.nav[1], site.nav[2], site.nav[3], site.nav[5]].forEach(function (item) {
         var a = ns.dom.el("a", "tab");
         a.href = item.href;
         a.dataset.target = item.id;
-        a.innerHTML = icon(navIcon(item.id)) + "<span>" + item.label + "</span>";
+        a.innerHTML = icon(navIcon(item.id)) + "<span>" + copy.nav[item.id] + "</span>";
         bar.appendChild(a);
       });
     } else {
       var homeTab = ns.dom.el("a", "tab");
       homeTab.href = site.homeHref + "#hero";
-      homeTab.innerHTML = icon("home") + "<span>Home</span>";
+      homeTab.innerHTML = icon("home") + "<span>" + copy.nav.home + "</span>";
       bar.appendChild(homeTab);
 
       var topTab = ns.dom.el("a", "tab");
       topTab.href = "#" + page;
-      topTab.innerHTML = icon("layers") + "<span>Top</span>";
+      topTab.innerHTML = icon("layers") + "<span>" + copy.tabTop + "</span>";
       bar.appendChild(topTab);
 
       var contactTab = ns.dom.el("a", "tab");
       contactTab.href = site.homeHref + "#contact";
-      contactTab.innerHTML = icon("mail") + "<span>Contact</span>";
+      contactTab.innerHTML = icon("mail") + "<span>" + copy.nav.contact + "</span>";
       bar.appendChild(contactTab);
     }
     document.body.appendChild(bar);
   }
 
   ns.render.icon = icon;
+  ns.render.header = renderHeader;
+  ns.render.tabbar = renderTabbar;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
