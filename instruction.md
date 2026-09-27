@@ -20,6 +20,9 @@ Rules I must follow in this project, at all times.
 ## 3. Process
 - Before writing any code, create the architecture folder with the full plan of folders, files and code structure.
 - The plan must be approved by the user before a single line of code is written.
+- Exception: when the user asks for a change without asking for a plan, write the code directly in that same turn, test it and commit it. Never answer such a request with a plan or a description only.
+- Every finished turn ends with: code on disk, headless test run against the real files, one git commit containing the change. A turn that produced no commit did not produce work.
+- Prefer touching existing code only when strictly necessary; new features go into new modules plus data files.
 - Documentation for each rule, decision or explanation lives in md files, never in code comments.
 - summary.md holds the verified current state of the project. decision.md holds decisions, changes, improvements and lessons. Both are written for an agent reader: short, factual, no doubt left about what to do or not do.
 - Update summary.md and decision.md at the end of every turn in which anything changed, and re-read them at the start of every new session instead of relying on memory. Never write a claim into them without checking the disk first.
