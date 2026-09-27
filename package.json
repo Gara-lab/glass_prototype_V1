@@ -1,5 +1,5 @@
 {
-  "dependencies": {
-    "puppeteer": "^24.43.1"
-  }
+  "name": "chelsea-design",
+  "private": true,
+  "version": "1.0.0"
 }
