@@ -2,6 +2,9 @@
 
 State of the project. Read this first after any session break. Facts only, verified against the files on disk. Do not trust memory over this file; if they disagree, re-read the code and update this file.
 
+## Git boundaries (hard rule)
+- The assistant never runs git commit / push / history rewrites. It edits working-tree files only and acts as the branch request creator. Committing and publishing to Github happen exclusively by explicit user choice. Never claim work is "committed".
+
 ## Project identity
 - Name: Lueur studio.
 - What it is: single-page landing page showcasing a freelance designer.

@@ -17,11 +17,15 @@ Rules I must follow in this project, at all times.
 - No global variables. Each module is an iife that keeps its state private and exposes only what is needed through a namespace or custom events.
 - Modules must be as independent as possible: no shared mutable state, no deep relative path assumptions, each script loaded with a plain path from the root.
 
+## 2b. Git boundaries (hard rule)
+- The assistant never commits, pushes, merges or rewrites git history on its own initiative.
+- The assistant only edits working-tree files; it acts as the branch request creator.
+- Committing and publishing to Github happen exclusively by explicit user choice.
+- Reporting state must say "changes are in the working tree", never "committed".
+
 ## 3. Process
-- Before writing any code, create the architecture folder with the full plan of folders, files and code structure.
-- The plan must be approved by the user before a single line of code is written.
-- Exception: when the user asks for a change without asking for a plan, write the code directly in that same turn, test it and commit it. Never answer such a request with a plan or a description only.
-- Every finished turn ends with: code on disk, headless test run against the real files, one git commit containing the change. A turn that produced no commit did not produce work.
+- When the user asks for a change without asking for a plan, write the actual code directly in that same turn. Never answer such a request with a plan or a description only.
+- Plans are written only when the user explicitly asks for one.
 - Prefer touching existing code only when strictly necessary; new features go into new modules plus data files.
 - Documentation for each rule, decision or explanation lives in md files, never in code comments.
 - summary.md holds the verified current state of the project. decision.md holds decisions, changes, improvements and lessons. Both are written for an agent reader: short, factual, no doubt left about what to do or not do.

@@ -58,10 +58,13 @@ Every delivery gets checked against the instruction.md checklist: no comment tok
 privacy.html and terms.html carry class "legal-body" but render-legal.js looked up getElementById("legal-body") and silently rendered nothing. Host lookups must use the section id (privacy / terms). Symptom of this bug class: page loads with zero js errors but an empty section. When a section is empty, first check the id used by its renderer against the id in the html.
 
 ### L8. Never answer a change request with a plan only
-User rule (2026-09-27): when a coding request does not ask for a plan, deliver code in that same turn. Required proof per turn: files changed on disk + headless test run + git commit hash quoted in the reply. Repeating "implemented and verified" without showing the commit is treated as hallucination by the user; always paste the actual test output lines.
+User rule (2026-09-27): when a coding request does not ask for a plan, deliver code in that same turn. Required proof per turn: list the changed file paths on disk + paste actual headless test output lines. Repeating "implemented and verified" without evidence is treated as hallucination. Do NOT commit: committing and publishing are by user choice only (see L10).
 
 ### L9. Test harness gotchas in this sandbox
 Ports stay occupied between runs (EADDRINUSE on 8099/8123 even after pkill): bind the static server with listen(0) and read server.address().port instead of hardcoding. Puppeteer works with --no-sandbox. Delete *.tmp.js test scripts before committing; they are ignored anyway.
+
+### L10. Git ownership corrected (user rule, 2026-09-27)
+The assistant does NOT commit. Earlier turns claimed commits (d76ab66, dd2b7f8, 57c39e8...) which created a false record: publishing is by user choice only, via their own flow. From now on: edit working-tree files only, never run git commit / push / checkout that rewrites history. Report state as "changes are in the working tree". L8's "git commit hash quoted in the reply" requirement is void; replace it with: list the changed file paths plus paste actual test output lines.
 
 ## Legal content decisions
 - Privacy policy must state plainly: the site holds no personal data; a registered email is never used for ads or marketing; anything delivered through the services is the client's sole responsibility and ownership. Same ownership clause mirrored in the terms. Keep these clauses when rewriting legal copy.
