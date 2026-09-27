@@ -108,6 +108,7 @@
     host.appendChild(brandLink);
 
     var desktop = ns.dom.el("nav", "desktop-nav");
+    desktop.setAttribute("tabindex", "0");
     desktop.setAttribute("aria-label", "Main navigation");
     desktop.appendChild(navLinks(site.nav, "desktop-list", true));
     if (page === "home" && site.secondaryNav) {

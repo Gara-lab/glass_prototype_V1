@@ -33,8 +33,8 @@
       { id: "home", label: "Home", href: "#hero" },
       { id: "services", label: "Services", href: "#services" },
       { id: "work", label: "Work", href: "#work" },
-      { id: "about", label: "About", href: "#about" },
       { id: "results", label: "Results", href: "#results" },
+      { id: "about", label: "About", href: "#about" },
       { id: "contact", label: "Contact", href: "#contact" }
     ],
     secondaryNav: [

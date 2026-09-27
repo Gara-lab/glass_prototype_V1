@@ -11,7 +11,7 @@
   }
 
   function setActiveNav() {
-    var sections = ["home", "services", "work", "about", "results", "contact"];
+    var sections = ["home", "services", "work", "results", "about", "contact"];
     var map = { home: "hero" };
     if (!("IntersectionObserver" in window)) {
       return;
