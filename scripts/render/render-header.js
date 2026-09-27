@@ -91,6 +91,19 @@
     document.body.appendChild(rail);
   }
 
+  function otherLegal(page, list) {
+    if (page === "home") {
+      return list;
+    }
+    var filtered = [];
+    list.forEach(function (item) {
+      if (item.href.indexOf(page + ".html") !== 0) {
+        filtered.push(item);
+      }
+    });
+    return filtered;
+  }
+
   function renderHeader() {
     var host = ns.dom.section("site-header");
     var site = ns.data.site;
@@ -110,10 +123,14 @@
     var desktop = ns.dom.el("nav", "desktop-nav");
     desktop.setAttribute("tabindex", "0");
     desktop.setAttribute("aria-label", "Main navigation");
-    desktop.appendChild(navLinks(site.nav, "desktop-list", true));
-    if (page === "home" && site.secondaryNav) {
+    if (page === "home") {
+      desktop.appendChild(navLinks(site.nav, "desktop-list", true));
+    } else {
+      desktop.appendChild(navLinks([site.nav[0], site.nav[1]], "desktop-list", true));
+    }
+    if (site.secondaryNav) {
       desktop.appendChild(ns.dom.el("p", "drawer-label", "More"));
-      desktop.appendChild(navLinks(site.secondaryNav, "drawer-list", false));
+      desktop.appendChild(navLinks(otherLegal(page, site.secondaryNav), "drawer-list", false));
     }
     host.appendChild(desktop);
 
@@ -121,7 +138,7 @@
     cta.href = page === "home" ? "#contact" : site.homeHref + "#contact";
     host.appendChild(cta);
 
-    if (site.sidebar && page === "home") {
+    if (site.sidebar) {
       host.appendChild(hideButton(site.sidebar));
       showRail(site.sidebar);
     }

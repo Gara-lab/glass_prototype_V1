@@ -54,6 +54,13 @@ summary.md and decision.md must be updated at the end of every turn where someth
 ### L6. Verification before claiming done
 Every delivery gets checked against the instruction.md checklist: no comment tokens in js/css/html, no top-level declarations outside an iife, sentence case everywhere visible, each module survives removal of the others, no network requests. Verify with grep/read, not by memory.
 
+### L7. Renderers target sections by id, never by class
+privacy.html and terms.html carry class "legal-body" but render-legal.js looked up getElementById("legal-body") and silently rendered nothing. Host lookups must use the section id (privacy / terms). Symptom of this bug class: page loads with zero js errors but an empty section. When a section is empty, first check the id used by its renderer against the id in the html.
+
+## Legal content decisions
+- Privacy policy must state plainly: the site holds no personal data; a registered email is never used for ads or marketing; anything delivered through the services is the client's sole responsibility and ownership. Same ownership clause mirrored in the terms. Keep these clauses when rewriting legal copy.
+- Sidebar on legal pages: Home + Services + "More" drawer holding only the OTHER legal page (privacy shows terms, terms shows privacy; never a self-link). Hide-menu button and restore rail exist on every page, not just home.
+
 ## Rejected / deferred on purpose
 - Backend or third-party form handler for the contact form: rejected for now (rules forbid db and external api). Contact form validates and confirms locally only.
 - Multi-page site routing: deferred.

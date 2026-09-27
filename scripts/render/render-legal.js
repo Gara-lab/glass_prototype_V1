@@ -4,7 +4,10 @@
   var ns = window.lueurStudio;
 
   function renderLegalPage() {
-    var host = ns.dom.section("legal-body");
+    var host = ns.dom.section("privacy");
+    if (!host) {
+      host = ns.dom.section("terms");
+    }
     if (!host) {
       return;
     }
