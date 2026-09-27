@@ -2,6 +2,9 @@
 
 State of the project. Read this first after any session break. Facts only, verified against the files on disk. Do not trust memory over this file; if they disagree, re-read the code and update this file.
 
+## Git boundaries (hard rule)
+- The assistant never runs git commit / push / history rewrites. It edits working-tree files only and acts as the branch request creator. Committing and publishing to Github happen exclusively by explicit user choice. Never claim work is "committed".
+
 ## Project identity
 - Name: Lueur studio.
 - What it is: single-page landing page showcasing a freelance designer.
@@ -31,9 +34,10 @@ Main page exists and works. Files on disk:
 - scripts/data/services.js: service offers list.
 - scripts/data/results.js: numbers / proof points.
 - scripts/data/work.js: 6 placeholder case studies for the work showcase.
-- scripts/data/legal.js: privacy policy and terms of service sections.
+- scripts/data/legal.js: privacy policy and terms of service sections. Privacy states explicitly: no personal data held by the site, email never used for ads or marketing, delivered products are the client's sole responsibility and ownership. Terms repeat the sole property / sole responsibility clause in "Ownership and usage".
 - scripts/data/contact.js: email, handles, form labels.
-- scripts/render/render-header.js, render-hero.js, render-services.js, render-work.js, render-results.js, render-about.js, render-contact.js, render-footer.js, render-lightbox.js, render-legal.js: one renderer per section, each reads its own data key and writes only into its own section id. render-header is page-aware via body data-page: sidebar lists all 6 sections plus a "More" drawer (privacy/terms, home only); mobile tabbar = in-page nav without duplication; hamburger sheet holds overflow. Section anchors auto-prefix with index.html# on legal pages.
+- scripts/render/render-header.js, render-hero.js, render-services.js, render-work.js, render-results.js, render-about.js, render-contact.js, render-footer.js, render-lightbox.js, render-legal.js: one renderer per section, each reads its own data key and writes only into its own section id. render-header is page-aware via body data-page: on home the sidebar lists all 6 sections plus a "More" drawer with both legal links; on privacy/terms the sidebar lists Home + Services plus a "More" drawer containing ONLY the other legal page (no self-link); hide-menu button and rail exist on every page. Mobile tabbar = in-page nav without duplication; hamburger sheet holds overflow. Section anchors auto-prefix with index.html# on legal pages.
+- scripts/render/render-legal.js: renders the legal article into the section whose id matches the page ("privacy" or "terms"), read via ns.dom.section by id, NOT by class.
 - scripts/behavior/nav-toggle.js: mobile menu sheet open/close, aria-expanded, escape closes. Sidebar hide/show rail (body.sidebar-hidden).
 - scripts/behavior/smooth-scroll.js: anchor scrolling honoring sticky header offset. Also stops wheel event propagation inside the desktop sidebar so its scroll stays independent from the page.
 - scripts/behavior/lightbox.js: opens work case in lightbox on "View case", closes on X / backdrop / Escape.
