@@ -22,6 +22,7 @@ State of the project. Read this first after any session break. Facts only, verif
 See instruction.md. Non-negotiables: pure vanilla js, no python, no db, no external api, no comments in code, no global variables, no camelCase in publicly visible content, KISS, modular and independent modules, architecture plan approved before coding.
 
 ## Current state: DONE and verified
+Deployment note (2026-09-27): cloudflare deploy failed because node_modules + package.json (puppeteer test tooling) were tracked in git and wrangler served "." as assets dir. Fixed in working tree: .gitignore now excludes node_modules/, package.json, package-lock.json, .wrangler/; those files removed from the git index (staged deletions). Repo must stay pure static site. User handles all commits/pushes personally. See decision.md L8.
 Main page exists and works. Files on disk:
 - index.html: shell. 3 aura background divs, skip link, header#site-header, main with 6 empty sections in flow order (hero, services, work, results, about, contact), footer#site-footer. body has data-page="home". All sections are filled by js renderers. Script load order at the bottom of body: namespace.js, dom.js, data files, render files, behavior files, main.js last.
 - privacy.html and terms.html: legal pages, same shell pattern, body data-page="privacy"/"terms", single section rendered by render-legal.js from scripts/data/legal.js.
