@@ -30,10 +30,14 @@
     contactIntro: "Tell me about the account you want to revive. I answer within two working days.",
     nav: [
       { id: "home", label: "Home", href: "#hero" },
+      { id: "contact", label: "Contact", href: "#contact" },
       { id: "services", label: "Services", href: "#services" },
-      { id: "results", label: "Results", href: "#results" },
       { id: "about", label: "About", href: "#about" },
-      { id: "contact", label: "Contact", href: "#contact" }
-    ]
+      { id: "results", label: "Results", href: "#results" }
+    ],
+    sidebar: {
+      showLabel: "Show menu",
+      hideLabel: "Hide menu"
+    }
   };
 })();

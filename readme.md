@@ -11,6 +11,8 @@ Open index.html in any modern browser, or serve the folder with any static serve
 - architecture/plan.md: full structure, style brief and module rules.
 - architecture/modules.md: what each module reads, writes and exposes.
 - instruction.md: project rules that every change must follow.
+- summary.md: verified current state of the project, read first after any session break.
+- decision.md: decisions, changes and lessons learned, so past mistakes are not repeated.
 - styles/: base.css tokens, layout.css shell and grids, components.css glass parts.
 - scripts/data/: all editable content (texts, services, results, contact details).
 - scripts/render/: one renderer per section.
