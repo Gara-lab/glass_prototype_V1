@@ -36,6 +36,8 @@ Why the project is shaped like this. Read alongside summary.md. Newest entries a
 
 ## Lessons learned / known traps
 
+L8. Repo contains only the static site (html, styles, scripts, assets, md docs). Puppeteer + node_modules were once tracked in git and broke the cloudflare deploy: wrangler used "." as assets directory and refused the 128 MiB workerd binary inside node_modules. Working-tree fix: .gitignore now excludes node_modules/, package.json, package-lock.json, .wrangler/; tooling files removed from the git index. Rule: never add npm packages or test dependencies to this repo; smoke tests run locally only, artifacts stay out of git. If a deploy needs a build step later, keep dependency folders out of the served directory.
+
 ### L1. Empty sections are rendered by js
 Sections in index.html are intentionally empty shells. If a section appears blank, check the renderer ran and the data key name matches. Do not "fix" it by pasting html into index.html.
 
