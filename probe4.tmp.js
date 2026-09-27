@@ -1,0 +1,21 @@
+const puppeteer = require("puppeteer");
+(async () => {
+  const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1280, height: 420 });
+  await page.goto("http://localhost:8123/index.html", { waitUntil: "networkidle0" });
+  await new Promise(r => setTimeout(r, 600));
+  const state = () => page.evaluate(() => ({ nav: document.querySelector(".desktop-nav").scrollTop, win: window.scrollY }));
+  await page.mouse.move(139, 210);
+  await page.mouse.wheel({ deltaY: 120 });
+  await new Promise(r => setTimeout(r, 150));
+  console.log("after sidebar wheel", JSON.stringify(await state()));
+  await page.mouse.move(760, 210);
+  await page.mouse.wheel({ deltaY: 200 });
+  await new Promise(r => setTimeout(r, 150));
+  console.log("after absorb", JSON.stringify(await state()));
+  await page.mouse.wheel({ deltaY: 300 });
+  await new Promise(r => setTimeout(r, 500));
+  console.log("after real page wheel", JSON.stringify(await state()));
+  await browser.close();
+})();
