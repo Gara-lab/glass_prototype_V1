@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="styles/layout.css">
 <link rel="stylesheet" href="styles/components.css">
 </head>
-<body>
+<body data-page="home">
 <div class="aura aura-one" aria-hidden="true"></div>
 <div class="aura aura-two" aria-hidden="true"></div>
 <div class="aura aura-three" aria-hidden="true"></div>
@@ -23,6 +23,7 @@
 <main class="page">
 <section id="hero" class="section hero"></section>
 <section id="services" class="section services"></section>
+<section id="work" class="section work"></section>
 <section id="results" class="section results"></section>
 <section id="about" class="section about"></section>
 <section id="contact" class="section contact"></section>
@@ -34,11 +35,14 @@
 <script src="scripts/dom.js"></script>
 <script src="scripts/data/site.js"></script>
 <script src="scripts/data/services.js"></script>
+<script src="scripts/data/work.js"></script>
 <script src="scripts/data/results.js"></script>
 <script src="scripts/data/contact.js"></script>
 <script src="scripts/render/render-header.js"></script>
 <script src="scripts/render/render-hero.js"></script>
 <script src="scripts/render/render-services.js"></script>
+<script src="scripts/render/render-work.js"></script>
+<script src="scripts/render/render-lightbox.js"></script>
 <script src="scripts/render/render-results.js"></script>
 <script src="scripts/render/render-about.js"></script>
 <script src="scripts/render/render-contact.js"></script>
@@ -47,6 +51,7 @@
 <script src="scripts/behavior/smooth-scroll.js"></script>
 <script src="scripts/behavior/reveal-on-scroll.js"></script>
 <script src="scripts/behavior/contact-form.js"></script>
+<script src="scripts/behavior/lightbox.js"></script>
 <script src="scripts/main.js"></script>
 </body>
 </html>

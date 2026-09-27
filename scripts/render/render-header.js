@@ -12,9 +12,29 @@
       home: '<path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/>',
       chart: '<path d="M4 20V9"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/>',
       user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/>',
-      mail: '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M4 7l8 6 8-6"/>'
+      mail: '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M4 7l8 6 8-6"/>',
+      image: '<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="M5 18l5-5 3 3 2.5-2.5L20 17"/>'
     };
     return '<svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (shapes[name] || "") + "</svg>";
+  }
+
+  function navIcon(id) {
+    if (id === "home") {
+      return "home";
+    }
+    if (id === "services") {
+      return "grid";
+    }
+    if (id === "work") {
+      return "image";
+    }
+    if (id === "about") {
+      return "user";
+    }
+    if (id === "results") {
+      return "chart";
+    }
+    return "mail";
   }
 
   function brand() {
@@ -26,13 +46,17 @@
 
   function navLinks(list, className, withIcons) {
     var ul = ns.dom.el("ul", className);
+    var rootHref = ns.data.site ? ns.data.site.homeHref : "index.html";
+    var onHome = document.body.dataset.page === "home";
     list.forEach(function (item) {
       var li = ns.dom.el("li");
       var a = ns.dom.el("a", "nav-link");
-      a.href = item.href;
-      a.dataset.target = item.id;
+      a.href = onHome || item.href.indexOf("#") !== 0 ? item.href : rootHref + item.href;
+      if (item.href.indexOf("#") === 0) {
+        a.dataset.target = item.id;
+      }
       if (withIcons) {
-        a.innerHTML = icon(item.id) + "<span>" + item.label + "</span>";
+        a.innerHTML = icon(navIcon(item.id)) + "<span>" + item.label + "</span>";
       } else {
         a.textContent = item.label;
       }
@@ -73,19 +97,30 @@
     if (!host || !site) {
       return;
     }
+    var page = document.body.dataset.page || "home";
+    host.dataset.active = page;
     host.innerHTML = "";
-    host.appendChild(brand());
+
+    var brandLink = brand();
+    if (page !== "home") {
+      brandLink.href = site.homeHref + "#hero";
+    }
+    host.appendChild(brandLink);
 
     var desktop = ns.dom.el("nav", "desktop-nav");
     desktop.setAttribute("aria-label", "Main navigation");
     desktop.appendChild(navLinks(site.nav, "desktop-list", true));
+    if (page === "home" && site.secondaryNav) {
+      desktop.appendChild(ns.dom.el("p", "drawer-label", "More"));
+      desktop.appendChild(navLinks(site.secondaryNav, "drawer-list", false));
+    }
     host.appendChild(desktop);
 
     var cta = ns.dom.el("a", "btn btn-soft header-cta", "Start a project");
-    cta.href = "#contact";
+    cta.href = page === "home" ? "#contact" : site.homeHref + "#contact";
     host.appendChild(cta);
 
-    if (site.sidebar) {
+    if (site.sidebar && page === "home") {
       host.appendChild(hideButton(site.sidebar));
       showRail(site.sidebar);
     }
@@ -94,7 +129,16 @@
     sheet.id = "menu-sheet";
     var sheetNav = ns.dom.el("nav", "sheet-nav");
     sheetNav.setAttribute("aria-label", "Sheet navigation");
-    sheetNav.appendChild(navLinks(site.nav, "sheet-list"));
+    if (page === "home") {
+      sheetNav.appendChild(navLinks([site.nav[0], site.nav[1], site.nav[2]], "sheet-list", false));
+      sheetNav.appendChild(ns.dom.el("p", "drawer-label", "More"));
+      sheetNav.appendChild(navLinks([site.nav[3], site.nav[4], site.nav[5]], "sheet-list sheet-secondary", false));
+      if (site.secondaryNav) {
+        sheetNav.appendChild(navLinks(site.secondaryNav, "sheet-list sheet-legal", false));
+      }
+    } else if (site.secondaryNav) {
+      sheetNav.appendChild(navLinks(site.secondaryNav, "sheet-list sheet-legal", false));
+    }
     sheet.appendChild(sheetNav);
     document.body.appendChild(sheet);
 
@@ -110,6 +154,7 @@
 
   function renderTabbar() {
     var site = ns.data.site;
+    var page = document.body.dataset.page || "home";
     if (!site) {
       return;
     }
@@ -117,14 +162,31 @@
       return;
     }
     var bar = ns.dom.el("nav", "mobile-tabbar glass");
-    bar.setAttribute("aria-label", "Mobile navigation");
-    site.nav.forEach(function (item) {
-      var a = ns.dom.el("a", "tab");
-      a.href = item.href;
-      a.dataset.target = item.id;
-      a.innerHTML = icon(item.id === "home" ? "home" : item.id === "services" ? "grid" : item.id === "results" ? "chart" : item.id === "about" ? "user" : "mail") + "<span>" + item.label + "</span>";
-      bar.appendChild(a);
-    });
+    bar.setAttribute("aria-label", "Page navigation");
+    if (page === "home") {
+      [site.nav[0], site.nav[1], site.nav[2], site.nav[3], site.nav[5]].forEach(function (item) {
+        var a = ns.dom.el("a", "tab");
+        a.href = item.href;
+        a.dataset.target = item.id;
+        a.innerHTML = icon(navIcon(item.id)) + "<span>" + item.label + "</span>";
+        bar.appendChild(a);
+      });
+    } else {
+      var homeTab = ns.dom.el("a", "tab");
+      homeTab.href = site.homeHref + "#hero";
+      homeTab.innerHTML = icon("home") + "<span>Home</span>";
+      bar.appendChild(homeTab);
+
+      var topTab = ns.dom.el("a", "tab");
+      topTab.href = "#" + page;
+      topTab.innerHTML = icon("layers") + "<span>Top</span>";
+      bar.appendChild(topTab);
+
+      var contactTab = ns.dom.el("a", "tab");
+      contactTab.href = site.homeHref + "#contact";
+      contactTab.innerHTML = icon("mail") + "<span>Contact</span>";
+      bar.appendChild(contactTab);
+    }
     document.body.appendChild(bar);
   }
 

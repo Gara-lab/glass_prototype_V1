@@ -15,6 +15,7 @@
       secondaryCta: "See the services"
     },
     servicesIntro: "Focused offers, no noise. Each one is delivered as ready-to-post files, sized for mobile first.",
+    workIntro: "Selected revivals from the studio. Names shared with permission, numbers kept honest.",
     resultsIntro: "A few numbers from recent revivals. Quiet accounts, visible results.",
     about: {
       eyebrow: "About",
@@ -30,11 +31,17 @@
     contactIntro: "Tell me about the account you want to revive. I answer within two working days.",
     nav: [
       { id: "home", label: "Home", href: "#hero" },
-      { id: "contact", label: "Contact", href: "#contact" },
       { id: "services", label: "Services", href: "#services" },
+      { id: "work", label: "Work", href: "#work" },
       { id: "about", label: "About", href: "#about" },
-      { id: "results", label: "Results", href: "#results" }
+      { id: "results", label: "Results", href: "#results" },
+      { id: "contact", label: "Contact", href: "#contact" }
     ],
+    secondaryNav: [
+      { id: "privacy", label: "Privacy policy", href: "privacy.html" },
+      { id: "terms", label: "Terms of service", href: "terms.html" }
+    ],
+    homeHref: "index.html",
     sidebar: {
       showLabel: "Show menu",
       hideLabel: "Hide menu"

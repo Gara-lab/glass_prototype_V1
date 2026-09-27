@@ -80,6 +80,17 @@
   gap: 16px;
 }
 
+.work-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.legal-body {
+  max-width: 720px;
+  margin: 0 auto;
+  padding-top: 118px;
+}
+
 .results-grid {
   display: grid;
   gap: 14px;
@@ -154,6 +165,15 @@
   .services-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px;
+  }
+
+  .work-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .legal-body {
+    padding-top: 40px;
   }
 
   .results-grid {
