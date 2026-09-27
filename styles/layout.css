@@ -127,6 +127,8 @@
     right: auto;
     bottom: 26px;
     width: 250px;
+    height: auto;
+    max-height: calc(100vh - 52px);
     margin: 0;
     flex-direction: column;
     align-items: flex-start;
@@ -134,7 +136,41 @@
     gap: 26px;
     padding: 26px 22px;
     border-radius: var(--radius-l);
+    overflow: hidden;
+    overscroll-behavior: contain;
+    scrollbar-gesture: none;
+    touch-action: pan-y;
     transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.3s;
+  }
+
+  .desktop-nav {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(168, 107, 94, 0.35) transparent;
+    padding-right: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .desktop-nav::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .desktop-nav::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .desktop-nav::-webkit-scrollbar-thumb {
+    background: rgba(168, 107, 94, 0.35);
+    border-radius: 999px;
+  }
+
+  .desktop-nav:focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: 4px;
   }
 
   .menu-button,

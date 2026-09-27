@@ -4,6 +4,19 @@
   var ns = window.lueurStudio;
 
   function bind() {
+    var header = ns.dom.section("site-header");
+    if (header) {
+      header.addEventListener("wheel", function (event) {
+        var nav = header.querySelector(".desktop-nav");
+        if (!nav) {
+          return;
+        }
+        if (nav.scrollHeight > nav.clientHeight + 1) {
+          event.stopPropagation();
+        }
+      }, { passive: true });
+    }
+
     document.addEventListener("click", function (event) {
       var link = event.target.closest('a[href^="#"]');
       if (!link) {

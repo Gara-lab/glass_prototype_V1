@@ -20,19 +20,23 @@ See instruction.md. Non-negotiables: pure vanilla js, no python, no db, no exter
 
 ## Current state: DONE and verified
 Main page exists and works. Files on disk:
-- index.html: shell. 3 aura background divs, skip link, header#site-header, main with 5 empty sections (hero, services, results, about, contact), footer#site-footer. All sections are filled by js renderers. Script load order at the bottom of body: namespace.js, dom.js, 4 data files, 6 render files, 4 behavior files, main.js last.
+- index.html: shell. 3 aura background divs, skip link, header#site-header, main with 6 empty sections in flow order (hero, services, work, results, about, contact), footer#site-footer. body has data-page="home". All sections are filled by js renderers. Script load order at the bottom of body: namespace.js, dom.js, data files, render files, behavior files, main.js last.
+- privacy.html and terms.html: legal pages, same shell pattern, body data-page="privacy"/"terms", single section rendered by render-legal.js from scripts/data/legal.js.
 - styles/base.css: tokens (colors #f4e9e4 palette, glass surfaces, radii, spacing, type scale), reset, typography, reduced-motion handling.
-- styles/layout.css: mobile-first shell, section rhythm, grids, aura blobs, tabbar area, desktop breakpoints.
-- styles/components.css: glass card, button, badge, nav, menu sheet, form, lightbox-ready classes, reveal animation classes.
+- styles/layout.css: mobile-first shell, section rhythm, grids, aura blobs, tabbar area, desktop breakpoints. Desktop sidebar (.site-header) is a fixed column capped at calc(100vh - 52px) with overflow hidden; .desktop-nav inside it is the only scroll container (overflow-y auto, overscroll-behavior contain, flex 1 1 auto, min-height 0) so sidebar scrolling never chains to the page.
+- styles/components.css: glass card, button, badge, nav, menu sheet, form, lightbox, legal page, drawer, reveal animation classes.
 - scripts/namespace.js: creates window.lueurStudio with sub-objects data, dom, render, behavior. This is the ONLY object attached to window.
 - scripts/dom.js: helpers ns.dom.query / queryAll.
-- scripts/data/site.js: brand, tagline, hero copy, intros, about paragraphs, values, nav items, contact intro. Single source of all static text.
+- scripts/data/site.js: brand, tagline, hero copy, intros, about paragraphs, values, nav items (order: home, services, work, results, about, contact), secondaryNav (privacy, terms), homeHref, sidebar labels, contact intro. Single source of all static text.
 - scripts/data/services.js: service offers list.
 - scripts/data/results.js: numbers / proof points.
+- scripts/data/work.js: 6 placeholder case studies for the work showcase.
+- scripts/data/legal.js: privacy policy and terms of service sections.
 - scripts/data/contact.js: email, handles, form labels.
-- scripts/render/render-header.js, render-hero.js, render-services.js, render-results.js, render-about.js, render-contact.js, render-footer.js: one renderer per section, each reads its own data key and writes only into its own section id.
-- scripts/behavior/nav-toggle.js: mobile menu sheet open/close, aria-expanded, escape closes.
-- scripts/behavior/smooth-scroll.js: anchor scrolling honoring sticky header offset.
+- scripts/render/render-header.js, render-hero.js, render-services.js, render-work.js, render-results.js, render-about.js, render-contact.js, render-footer.js, render-lightbox.js, render-legal.js: one renderer per section, each reads its own data key and writes only into its own section id. render-header is page-aware via body data-page: sidebar lists all 6 sections plus a "More" drawer (privacy/terms, home only); mobile tabbar = in-page nav without duplication; hamburger sheet holds overflow. Section anchors auto-prefix with index.html# on legal pages.
+- scripts/behavior/nav-toggle.js: mobile menu sheet open/close, aria-expanded, escape closes. Sidebar hide/show rail (body.sidebar-hidden).
+- scripts/behavior/smooth-scroll.js: anchor scrolling honoring sticky header offset. Also stops wheel event propagation inside the desktop sidebar so its scroll stays independent from the page.
+- scripts/behavior/lightbox.js: opens work case in lightbox on "View case", closes on X / backdrop / Escape.
 - scripts/behavior/reveal-on-scroll.js: IntersectionObserver adds .revealed.
 - scripts/behavior/contact-form.js: client-side validation only (name >= 2 chars, email regex, message >= 10 chars). Shows status text in #form-status. No submission anywhere, no network call.
 - scripts/main.js: sets footer year, active-nav highlighting via IntersectionObserver, boot order.
@@ -47,7 +51,6 @@ Open index.html in a browser, or serve the folder statically. No build step, no 
 Every visible text lives in scripts/data/*.js. Changing copy never requires touching render or behavior files.
 
 ## Not built yet (next candidates, do not assume any is started)
-- Gallery / portfolio showcase with lightbox. Mentioned in the original plan, absent from the current page.
 - Testimonials section.
 - Pricing or package details.
 - Final niche choice and the copy pass that follows it.

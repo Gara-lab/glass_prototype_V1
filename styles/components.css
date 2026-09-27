@@ -164,6 +164,11 @@ h1,
     display: inline-flex;
   }
 
+  .site-header > .header-cta,
+  .site-header > .sidebar-hide {
+    flex: 0 0 auto;
+  }
+
   .sidebar-hide {
     display: flex;
     align-items: center;
